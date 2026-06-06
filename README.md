@@ -1,5 +1,9 @@
 # HealthCheck-OS
 
+> **⚠️ Public mirror — read only.**
+> This is a sanitized reference copy. Development, Issues, and PRs are tracked in the private repository.
+> Do not use this repo as a working directory for AI agents.
+
 健診業務・医療業務の自動化開発を、複数AIエージェントと人間が安全に分担するための共有OSです。
 
 ## クイックスタート
