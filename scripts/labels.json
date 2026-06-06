@@ -1,0 +1,81 @@
+{
+  "version": "1.2",
+  "updated": "2026-05-31",
+  "source_issue": "akaza-lab-org/HealthCheck-OS#140",
+  "note": "HCOS label taxonomy source of truth. Apply with scripts/sync_labels.ps1. Human-readable explanation in docs/label_taxonomy.md. v1.2 adds handoff:human-merge so final merge wait is separated from blocked/human-review.",
+  "color_principle": "Classification axes (repo, ai) use one flat color each so the axis is recognizable at a glance. Gradient axes (safety, status) use a per-step severity/lifecycle ramp. council uses a teal family. No two different meanings share the same exact color, except intentional within-axis sharing (repo:*, ai:*, knowledge:adr/pattern).",
+  "categories": {
+    "classification": ["repo", "ai", "safety"],
+    "workflow": ["status", "council"],
+    "routing": ["review", "knowledge"],
+    "handoff": ["handoff"],
+    "topic": ["type"]
+  },
+  "common_labels": [
+    { "name": "ai:codex",          "color": "8250df", "description": "Suggested owner: Codex (implementation/verification)" },
+    { "name": "ai:claude",         "color": "8250df", "description": "Suggested owner: Claude (architecture/safety review)" },
+    { "name": "ai:gemini",         "color": "8250df", "description": "Suggested owner: Gemini (data/workflow analysis)" },
+    { "name": "ai:human-review",   "color": "8250df", "description": "Suggested owner: Human CTO decision/review required" },
+
+    { "name": "safety:ordinary",     "color": "c2e0c6", "description": "Risk 1/6: routine, low-risk work" },
+    { "name": "safety:deployment",   "color": "fef2c0", "description": "Risk 2/6: deployment, terminal setup, or sync impact" },
+    { "name": "safety:emr-ahk",      "color": "f9a03f", "description": "Risk 3/6: EMR or AHK execution-flow risk" },
+    { "name": "safety:medical-logic","color": "d93f0b", "description": "Risk 4/6: medical decision / fee-order logic" },
+    { "name": "safety:patient-data", "color": "b60205", "description": "Risk 5/6: patient data / PHI / identifiers" },
+    { "name": "safety:critical",     "color": "6e0000", "description": "Risk 6/6: critical safety or Knowledge OS integrity risk" },
+
+    { "name": "status:triage",     "color": "c5def5", "description": "Lifecycle 1: needs classification before work" },
+    { "name": "status:ready",      "color": "0e8a16", "description": "Lifecycle 2: approved, ready to start" },
+    { "name": "status:in-progress","color": "1d76db", "description": "Lifecycle 3: work actively in progress" },
+    { "name": "status:review",     "color": "fbca04", "description": "Lifecycle 4: waiting for review or verification" },
+    { "name": "status:done",       "color": "586069", "description": "Lifecycle 5: completed" },
+    { "name": "status:blocked",    "color": "e11d21", "description": "Orthogonal flag: blocked by decision or dependency" },
+
+    { "name": "review:claude",     "color": "a371f7", "description": "Routing: Claude architecture/safety review requested" },
+    { "name": "review:human",      "color": "bf8700", "description": "Routing: Human CTO review required" },
+    { "name": "handoff:human-merge","color": "db61a2", "description": "Handoff: ready for Human CTO merge decision; AI agents must not merge" },
+    { "name": "knowledge:adr",     "color": "0969da", "description": "Routing: should be promoted to an ADR" },
+    { "name": "knowledge:pattern", "color": "0969da", "description": "Routing: should be promoted to a reusable pattern" },
+    { "name": "knowledge:safety",  "color": "d1242f", "description": "Routing: should be promoted to a safety rule" }
+  ],
+  "hcos_only_labels": [
+    { "name": "council",           "color": "1f883d", "description": "Issue is managed as an HCOS AI Council room" },
+    { "name": "council:open",      "color": "54aeb3", "description": "Council: discussion open" },
+    { "name": "council:review",    "color": "2d8a8f", "description": "Council: under review / consensus check" },
+    { "name": "council:decision",  "color": "0b5e63", "description": "Council: decided (Human CTO only)" },
+    { "name": "council:archived",  "color": "cfe0e0", "description": "Council: archived (administrative)" },
+    { "name": "type:architecture", "color": "5319e7", "description": "Topic: architecture / design discussion" }
+  ],
+  "repo_registry": [
+    { "name": "repo:hcos",        "color": "cfd3d7", "description": "akaza-lab-org/HealthCheck-OS" },
+    { "name": "repo:kensin",      "color": "cfd3d7", "description": "akaza-lab-org/FujiONC_Kenshin2026" },
+    { "name": "repo:ahk",         "color": "cfd3d7", "description": "akaza-lab-org/AHK_setting" },
+    { "name": "repo:skills",      "color": "cfd3d7", "description": "akaza-lab-org/skills" },
+    { "name": "repo:summarymaker","color": "cfd3d7", "description": "akaza-lab-org/summarymaker" },
+    { "name": "repo:pdf-digitizer","color": "cfd3d7","description": "akaza-lab-org/pdf_digitizer" },
+    { "name": "repo:ikensho",     "color": "cfd3d7", "description": "akaza-lab-org/ikensho_git" },
+    { "name": "repo:keikakusho",  "color": "cfd3d7", "description": "akaza-lab-org/keikakusho" },
+    { "name": "repo:dm-kousin",   "color": "cfd3d7", "description": "akaza-lab-org/DM-kousin" },
+    { "name": "repo:wakumy",      "color": "cfd3d7", "description": "akaza-lab-org/wakumy_apilot" }
+  ],
+  "repo_self_label": {
+    "akaza-lab-org/HealthCheck-OS": "repo:hcos",
+    "akaza-lab-org/FujiONC_Kenshin2026": "repo:kensin",
+    "akaza-lab-org/AHK_setting": "repo:ahk",
+    "akaza-lab-org/skills": "repo:skills",
+    "akaza-lab-org/summarymaker": "repo:summarymaker",
+    "akaza-lab-org/pdf_digitizer": "repo:pdf-digitizer",
+    "akaza-lab-org/ikensho_git": "repo:ikensho",
+    "akaza-lab-org/keikakusho": "repo:keikakusho",
+    "akaza-lab-org/DM-kousin": "repo:dm-kousin",
+    "akaza-lab-org/wakumy_apilot": "repo:wakumy"
+  },
+  "migrations": [
+    { "action": "rename", "from": "safety:phi",         "to": "safety:patient-data", "repos": ["akaza-lab-org/ikensho_git", "akaza-lab-org/keikakusho", "akaza-lab-org/DM-kousin", "akaza-lab-org/wakumy_apilot"] },
+    { "action": "rename", "from": "in-progress",         "to": "status:in-progress",  "repos": ["akaza-lab-org/FujiONC_Kenshin2026"] },
+    { "action": "rename", "from": "repo:DM-kousin",      "to": "repo:dm-kousin",      "repos": ["akaza-lab-org/DM-kousin"] },
+    { "action": "rename", "from": "repo:wakumy_apilot",  "to": "repo:wakumy",         "repos": ["akaza-lab-org/wakumy_apilot"] },
+    { "action": "rename", "from": "architecture",        "to": "type:architecture",   "repos": ["akaza-lab-org/HealthCheck-OS", "akaza-lab-org/AHK_setting"] },
+    { "action": "recolor-via-sync", "note": "Color drift (e.g. ai:* unified to purple, repo:* unified to grey, status:triage to #c5def5) is corrected by running sync_labels.ps1, which uses gh label create --force." }
+  ]
+}

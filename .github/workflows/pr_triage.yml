@@ -1,0 +1,117 @@
+name: HCOS PR Triage
+
+on:
+  pull_request:
+    types: [opened, reopened]
+
+permissions:
+  pull-requests: write
+  issues: write
+
+jobs:
+  triage:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ensure HCOS labels
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const labels = [
+              { name: "status:review", color: "fbca04", description: "PR is ready for review" },
+              { name: "status:blocked", color: "e11d21", description: "Orthogonal flag: blocked by decision or dependency" },
+              { name: "review:claude", color: "a371f7", description: "Routing: Claude architecture/safety review requested" },
+              { name: "review:human", color: "bf8700", description: "Human CTO review required" },
+              { name: "handoff:human-merge", color: "db61a2", description: "Handoff: ready for Human CTO merge decision; AI agents must not merge" },
+              { name: "knowledge:pattern", color: "0969da", description: "Reusable implementation pattern should be promoted" },
+              { name: "knowledge:adr", color: "0969da", description: "Architecture decision record should be promoted" },
+              { name: "knowledge:safety", color: "d1242f", description: "Safety rule should be promoted" },
+            ];
+
+            for (const label of labels) {
+              try {
+                await github.rest.issues.getLabel({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  name: label.name,
+                });
+              } catch (error) {
+                if (error.status !== 404) throw error;
+                await github.rest.issues.createLabel({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  ...label,
+                });
+              }
+            }
+
+      - name: Add review labels
+        uses: actions-ecosystem/action-add-labels@v1
+        with:
+          labels: |
+            status:review
+            review:claude
+
+      - name: Post HCOS state declaration comment
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const marker = "<!-- hcos-pr-triage -->";
+            const prBody = context.payload.pull_request.body || "";
+            const checkedPromotion = {
+              "knowledge:pattern": /-\s*\[[xX]\]\s*Pattern/.test(prBody),
+              "knowledge:adr": /-\s*\[[xX]\]\s*ADR/.test(prBody),
+              "knowledge:safety": /-\s*\[[xX]\]\s*Safety rule/.test(prBody),
+            };
+            const promotionLabels = Object.entries(checkedPromotion)
+              .filter(([, checked]) => checked)
+              .map(([label]) => label);
+
+            if (promotionLabels.length > 0) {
+              await github.rest.issues.addLabels({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                labels: promotionLabels,
+              });
+            }
+
+            const body = [
+              marker,
+              "HCOS STATE declaration for this PR thread:",
+              "",
+              "```text",
+              "HCOS STATE: REVIEWING",
+              "ROLE: REVIEWER",
+              `TARGET: #${context.issue.number}`,
+              "```",
+              "",
+              "Standard review labels were applied:",
+              "- `status:review`",
+              "- `review:claude`",
+              "",
+              "@claude review this PR using HCOS Architecture & Safety protocol.",
+            ].join("\n");
+
+            const comments = await github.paginate(github.rest.issues.listComments, {
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              per_page: 100,
+            });
+            const existing = comments.find((comment) => comment.body && comment.body.includes(marker));
+
+            if (existing) {
+              await github.rest.issues.updateComment({
+                comment_id: existing.id,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body,
+              });
+            }

@@ -1,0 +1,37 @@
+{
+  "folders": [
+    {
+      "name": "HealthCheck-OS",
+      "path": "C:\\data\\GitHub_org\\HealthCheck-OS"
+    },
+    {
+      "name": "skills",
+      "path": "C:\\data\\GitHub_org\\skills"
+    },
+    {
+      "name": "summarymaker",
+      "path": "C:\\data\\GitHub_org\\summarymaker"
+    },
+    {
+      "name": "kensin",
+      "path": "C:\\data\\GitHub\\kensin"
+    },
+    {
+      "name": "ahk",
+      "path": "C:\\data\\GitHub\\ahk"
+    },
+    {
+      "name": "pdf_digitizer",
+      "path": "C:\\data\\GitHub\\pdf_digitizer"
+    }
+  ],
+  "settings": {
+    "files.encoding": "utf8",
+    "files.eol": "\n",
+    "files.exclude": {
+      "**/.git": true,
+      "**/.pytest_cache": true,
+      "**/__pycache__": true
+    }
+  }
+}

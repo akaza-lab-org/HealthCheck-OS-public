@@ -1,0 +1,104 @@
+name: HCOS Knowledge Promotion
+
+on:
+  pull_request:
+    types: [closed]
+
+jobs:
+  promote:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    # Issue #34:
+    # - issues:write is required to post HCOS Knowledge Check comments and close linked issues.
+    # - pull-requests:write is explicitly granted for PR-thread operations under stricter token defaults.
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Update CHANGELOG
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require("fs");
+            const path = "CHANGELOG.md";
+            const pr = context.payload.pull_request;
+            const body = pr.body || "";
+            const today = new Date().toISOString().slice(0, 10);
+            const files = await github.paginate(github.rest.pulls.listFiles, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: pr.number,
+              per_page: 100,
+            });
+            const names = files.map((file) => file.filename);
+            const addedSafety = names.filter((name) => /^docs\/safety\/.+\.md$/.test(name));
+            const addedAdr = names.filter((name) => /^docs\/adr\/.+\.md$/.test(name));
+            const addedPattern = names.filter((name) => /^docs\/pattern_.+\.md$/.test(name));
+            const linked = body.match(/Closes\s+#(\d+)/i);
+            const issueText = linked ? ` closes #${linked[1]}` : "";
+            const entry = [
+              `## ${today}`,
+              "",
+              `- Feature: ${pr.title}${issueText}.`,
+              ...addedSafety.map((name) => `- Safety Rule added: ${name}.`),
+              ...addedAdr.map((name) => `- ADR added: ${name}.`),
+              ...addedPattern.map((name) => `- Pattern added: ${name}.`),
+              "",
+            ].join("\n");
+
+            const existing = fs.existsSync(path) ? fs.readFileSync(path, "utf8") : "# Changelog\n\n";
+            if (!existing.includes(`- Feature: ${pr.title}${issueText}.`)) {
+              const updated = existing.startsWith("# Changelog")
+                ? existing.replace(/^# Changelog\s*\n/, `# Changelog\n\n${entry}`)
+                : `# Changelog\n\n${entry}${existing}`;
+              fs.writeFileSync(path, updated);
+            }
+
+      - name: Commit CHANGELOG update
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          branch: main
+          commit_message: "Update CHANGELOG for PR #${{ github.event.pull_request.number }}"
+          file_pattern: CHANGELOG.md
+
+      - name: Post knowledge reminder
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const pr = context.payload.pull_request;
+            const body = pr.body || "";
+            const linked = body.match(/Closes\s+#(\d+)/i);
+
+            if (linked) {
+              await github.rest.issues.update({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: Number(linked[1]),
+                state: "closed",
+              });
+            }
+
+            await github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: [
+                "HCOS Knowledge Check:",
+                "",
+                "Post-merge automation updated `CHANGELOG.md`.",
+                "",
+                "If this PR produced reusable intelligence, confirm it was promoted:",
+                "",
+                "- Pattern",
+                "- ADR",
+                "- Safety Rule",
+                "",
+                "HCOS rule: Code disappears. Knowledge accumulates. PRs are temporary. Docs are permanent.",
+              ].join("\n"),
+            });

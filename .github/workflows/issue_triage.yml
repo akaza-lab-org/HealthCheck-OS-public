@@ -1,0 +1,202 @@
+name: Issue triage
+
+on:
+  issues:
+    types: [opened, edited, reopened]
+
+permissions:
+  issues: write
+
+jobs:
+  triage:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ensure HCOS issue labels
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const labels = [
+              { name: "council", color: "1f883d", description: "Issue is managed as an HCOS AI Council room" },
+              { name: "architecture", color: "5319e7", description: "Architecture-focused issue" },
+              { name: "council:open", color: "54aeb3", description: "Council: discussion open" },
+              { name: "council:review", color: "2d8a8f", description: "Council: under review / consensus check" },
+              { name: "council:decision", color: "0b5e63", description: "Council: decided (Human CTO only)" },
+              { name: "council:archived", color: "cfe0e0", description: "Council: archived (administrative)" },
+              { name: "status:ready", color: "0e8a16", description: "Approved and ready for implementation" },
+              { name: "status:in-progress", color: "1d76db", description: "Work is actively in progress" },
+              { name: "status:review", color: "fbca04", description: "Waiting for review or verification" },
+              { name: "status:triage", color: "c5def5", description: "Lifecycle 1: needs classification before work" },
+              { name: "status:blocked", color: "e11d21", description: "Orthogonal flag: blocked by decision or dependency" },
+              { name: "handoff:human-merge", color: "db61a2", description: "Handoff: ready for Human CTO merge decision; AI agents must not merge" },
+            ];
+
+            for (const label of labels) {
+              try {
+                await github.rest.issues.getLabel({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  name: label.name,
+                });
+              } catch (error) {
+                if (error.status !== 404) throw error;
+                await github.rest.issues.createLabel({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  ...label,
+                });
+              }
+            }
+
+      - name: Apply AI task queue labels and comment
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const issue = context.payload.issue;
+            if (!issue || issue.pull_request) return;
+
+            const repoDefault = "repo:hcos";
+            const aiDefault = "ai:human-review";
+            const safetyDefault = "safety:deployment";
+            const rawText = `${issue.title || ""}\n${issue.body || ""}`.toLowerCase();
+            const text = rawText
+              .replace(/no patient data/g, "")
+              .replace(/no production logs/g, "")
+              .replace(/no production deployment/g, "")
+              .replace(/no code implementation/g, "")
+              .replace(/no patient identifiers/g, "")
+              .replace(/no external transmission/g, "")
+              .replace(/no screenshot/g, "")
+              .replace(/no emr\/ahk changes/g, "")
+              .replace(/safety:emr-ahk/g, "")
+              .replace(/患者情報[^\n]*(含めない|なし|除外)/g, "")
+              .replace(/本番ログ[^\n]*(含めない|なし|除外)/g, "")
+              .replace(/本番配布[^\n]*(含めない|なし|除外)/g, "")
+              .replace(/外部送信[^\n]*(しない|なし|除外)/g, "")
+              .replace(/スクリーンショット[^\n]*(しない|なし|除外|扱わない)/g, "")
+              .replace(/emr\/ahk[^\n]*(変更しない|なし|除外|out of scope)/g, "")
+              .replace(/emr[^\n]*(out of scope|スコープ外|除外|no change|別issue|別途|扱わない|変更しない)/g, "")
+              .replace(/ahk[^\n]*(out of scope|スコープ外|除外|no change|別issue|別途|扱わない|変更しない)/g, "")
+              .replace(/(out of scope|スコープ外|除外)[^\n]*(emr|ahk)/g, "")
+              .replace(/電子カルテ[^\n]*(変更しない|なし|除外|扱わない)/g, "");
+            const labels = new Set([repoDefault]);
+
+            const has = (...patterns) => patterns.some((p) => text.includes(p.toLowerCase()));
+
+            let ai = aiDefault;
+            if (has("ai owner: claude", "suggested ai: claude", "architecture", "設計", "医療安全レビュー")) ai = "ai:claude";
+            if (has("ai owner: codex", "suggested ai: codex", "template", "workflow", "docs")) ai = "ai:codex";
+            if (has("ai owner: gemini", "suggested ai: gemini", "csv", "db", "workflow gap", "業務フロー")) ai = "ai:gemini";
+
+            let safety = safetyDefault;
+            if (has("ordinary", "docs only", "documentation", "ドキュメントのみ")) safety = "safety:ordinary";
+            if (has("patient data", "患者情報", "identifier", "個人情報", "本番ログ")) safety = "safety:patient-data";
+            if (has("medical logic", "medical judgment", "医療判断", "料金", "fee", "pricing", "検査セット判断", "受診者番号", "発番", "patient_number")) safety = "safety:medical-logic";
+            if (has("emr execution", "ahk execution", "emr/ahk execution", "emr-ahk", "電子カルテ操作", "send keys", "送信キー", "config.ini")) safety = "safety:emr-ahk";
+
+            const humanDecisionDecided = has("human decision: decided", "human decision: 決定済み", "仕様確定済み");
+            const stop = !humanDecisionDecided && has(
+              "human decision: required",
+              "医療判断",
+              "料金",
+              "medical logic",
+              "pricing",
+              "emr execution",
+              "ahk execution",
+              "電子カルテ操作",
+              "send keys",
+              "config.ini",
+              "settings.json",
+              "本番配布",
+              "本番反映",
+              "production deployment",
+              "destructive",
+              "破壊的"
+            );
+
+            labels.add(ai);
+            labels.add(safety);
+
+            const currentLabels = (issue.labels || []).map((l) => (typeof l === "string" ? l : l.name));
+            const preservedStates = ["status:ready", "status:in-progress", "status:review"];
+            const existingState = currentLabels.find((l) => preservedStates.includes(l));
+
+            let status = "status:triage";
+            if (stop) {
+              status = "status:blocked";
+            } else if (existingState) {
+              status = existingState;
+            } else if (humanDecisionDecided) {
+              status = "status:ready";
+            }
+            labels.add(status);
+            if (stop) labels.add("ai:human-review");
+
+            const queuePrefixes = ["repo:", "ai:", "status:", "safety:"];
+            for (const existing of issue.labels || []) {
+              const name = typeof existing === "string" ? existing : existing.name;
+              if (name && queuePrefixes.some((prefix) => name.startsWith(prefix)) && !labels.has(name)) {
+                try {
+                  await github.rest.issues.removeLabel({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    issue_number: issue.number,
+                    name,
+                  });
+                } catch (error) {
+                  if (error.status !== 404) throw error;
+                }
+              }
+            }
+
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issue.number,
+              labels: Array.from(labels),
+            });
+
+            const marker = "<!-- hcos-ai-triage -->";
+            const comments = await github.paginate(github.rest.issues.listComments, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issue.number,
+              per_page: 100,
+            });
+            const existingTriageComment = comments.find((c) => c.body && c.body.includes(marker));
+
+            const nextAction = status === "status:ready"
+              ? "implementation can start."
+              : status === "status:in-progress"
+                ? "implementation is in progress."
+                : status === "status:review"
+                  ? "verification is in progress."
+                  : status === "status:blocked"
+                    ? "confirm scope and approval in this Issue before any AI implements."
+                    : "confirm scope, then move to status:ready when approved.";
+
+            const body = [
+              marker,
+              "AI Task Queue triage:",
+              "",
+              `- Suggested owner: ${status === "status:blocked" ? "Human CTO" : ai.replace("ai:", "")}`,
+              `- Safety level: ${safety.replace("safety:", "")}`,
+              `- Status: ${status.replace("status:", "")}`,
+              `- Next action: ${nextAction}`,
+              status === "status:blocked" ? "\nReason: this Issue appears to touch a stop-condition area such as medical safety, fee/order logic, EMR/AHK execution, terminal configuration, production deployment, or destructive data changes." : ""
+            ].join("\n");
+
+            if (existingTriageComment) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existingTriageComment.id,
+                body,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                body,
+              });
+            }

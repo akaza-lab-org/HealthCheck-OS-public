@@ -1,0 +1,84 @@
+name: HCOS Monthly Review
+description: Monthly cross-repository maintenance and re-entry review.
+title: "[HCOS Monthly Review] YYYY-MM"
+labels:
+  - status:review
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this issue to review HCOS-managed repositories, maintenance risks, and re-entry candidates.
+
+        Do not include real patient data, production secrets, or screenshots containing identifiers.
+
+  - type: input
+    id: month
+    attributes:
+      label: Review month
+      description: "Example: 2026-06"
+      placeholder: "2026-06"
+    validations:
+      required: true
+
+  - type: textarea
+    id: tier_a
+    attributes:
+      label: Tier A maintenance
+      description: Kensin / AHK / HCOS status, risks, and next actions.
+      value: |
+        - HealthCheck-OS:
+        - clinic-app:
+        - AHK_setting:
+    validations:
+      required: true
+
+  - type: textarea
+    id: tier_b
+    attributes:
+      label: Tier B advisory projects
+      description: summarymaker / pdf_digitizer / skills / re-entry projects.
+      value: |
+        - summarymaker:
+        - pdf_digitizer:
+        - skills:
+        - ikensho_git:
+        - keikakusho:
+        - DM-kousin:
+        - wakumy_apilot:
+    validations:
+      required: true
+
+  - type: textarea
+    id: tier_c
+    attributes:
+      label: Tier C inventory-only tools
+      description: Local-only tools and non-repo assets.
+      value: |
+        - tobu:
+        - chatworks:
+        - lecture slides:
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Safety checklist
+      options:
+        - label: No real patient data, production secrets, or identifier-bearing screenshots are included.
+          required: true
+        - label: Any medical logic / fee-order / EMR-AHK / destructive data / production deploy topic is marked for Human CTO decision.
+          required: true
+        - label: External AI or PHI-bearing output risks are explicitly noted if relevant.
+          required: true
+
+  - type: textarea
+    id: decisions
+    attributes:
+      label: Decisions and follow-up Issues
+      description: Link Issues or PRs created from this review.
+      placeholder: |
+        - [ ] Create Issue for ...
+        - [ ] Promote knowledge to docs/skill ...
+    validations:
+      required: false

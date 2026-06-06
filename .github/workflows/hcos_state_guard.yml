@@ -1,0 +1,138 @@
+name: HCOS State Guard
+
+on:
+  issues:
+    types: [labeled]
+  pull_request:
+    types: [opened, labeled]
+
+permissions:
+  issues: write
+  pull-requests: write
+
+jobs:
+  ensure-labels:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ensure HCOS state labels
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const labels = [
+              { name: "status:ready", color: "0e8a16", description: "Approved and ready for implementation" },
+              { name: "status:in-progress", color: "1d76db", description: "Work is actively in progress" },
+              { name: "status:review", color: "fbca04", description: "Waiting for review or verification" },
+              { name: "status:blocked", color: "e11d21", description: "Blocked by decision or dependency" },
+            ];
+
+            for (const label of labels) {
+              try {
+                await github.rest.issues.getLabel({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  name: label.name,
+                });
+              } catch (error) {
+                if (error.status !== 404) throw error;
+                await github.rest.issues.createLabel({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  ...label,
+                });
+              }
+            }
+
+  guard-council-decision:
+    if: github.event_name == 'issues' && github.event.action == 'labeled' && github.event.label.name == 'council:decision'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Enforce Human CTO-only council decision label
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const issue = context.payload.issue;
+            if (!issue) return;
+
+            const actor = (context.actor || "").toLowerCase();
+            const humanCto = "${{ vars.HUMAN_CTO_USERNAME }}".toLowerCase();
+            if (actor === humanCto) return;
+
+            try {
+              await github.rest.issues.removeLabel({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                name: "council:decision",
+              });
+            } catch (error) {
+              if (error.status !== 404) throw error;
+            }
+
+            const body = [
+              "<!-- hcos-state-guard-council-decision -->",
+              "HCOS State Guard warning:",
+              "",
+              "`council:decision` was removed because only Human CTO may set this lifecycle label.",
+              `Detected actor: @${context.actor}`,
+              "",
+              "Lifecycle authority reference:",
+              "- `council:review -> council:decision`: Human CTO only",
+            ].join("\n");
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issue.number,
+              body,
+            });
+
+  guard-ready-without-decision:
+    if: github.event_name == 'issues' && github.event.action == 'labeled' && github.event.label.name == 'status:ready'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Warn when status:ready is applied before human decision resolution
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const issue = context.payload.issue;
+            if (!issue || issue.pull_request) return;
+
+            const text = `${issue.body || ""}`.toLowerCase();
+            const requiresDecision = text.includes("human decision: required");
+            const decided = text.includes("human decision: decided") || text.includes("human decision: 決定済み");
+            if (!requiresDecision || decided) return;
+
+            const marker = "<!-- hcos-state-guard-ready-warning -->";
+            const comments = await github.paginate(github.rest.issues.listComments, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issue.number,
+              per_page: 100,
+            });
+            const existing = comments.find((c) => c.body && c.body.includes(marker));
+
+            const body = [
+              marker,
+              "HCOS State Guard warning:",
+              "",
+              "`status:ready` was applied while this issue body still declares `human decision: required`.",
+              "No label was removed automatically.",
+              "",
+              "Please confirm Human CTO decision status in the issue body before implementation.",
+            ].join("\n");
+
+            if (existing) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existing.id,
+                body,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                body,
+              });
+            }

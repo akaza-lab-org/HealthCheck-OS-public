@@ -1,0 +1,20 @@
+#!/bin/sh
+
+blocked=0
+
+while read local_ref local_sha remote_ref remote_sha
+do
+  case "$remote_ref" in
+    refs/heads/main|refs/heads/master)
+      echo "HCOS safety hook: direct push to $remote_ref is blocked." >&2
+      echo "Create a feature branch and open a PR. Human CTO merges through GitHub UI." >&2
+      blocked=1
+      ;;
+  esac
+done
+
+if [ "$blocked" -ne 0 ]; then
+  exit 1
+fi
+
+exit 0

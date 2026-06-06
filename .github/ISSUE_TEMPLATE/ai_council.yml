@@ -1,0 +1,83 @@
+name: HCOS AI Council
+description: Multi-agent meeting room for architecture, feature, safety, and operations decisions
+title: "[HCOS Council] "
+labels: ["repo:hcos", "ai:human-review", "status:triage", "safety:deployment", "council", "council:open"]
+body:
+  - type: dropdown
+    id: council_type
+    attributes:
+      label: Council Type
+      options:
+        - Architecture
+        - Feature
+        - Safety
+        - Operations
+    validations:
+      required: true
+  - type: checkboxes
+    id: participants
+    attributes:
+      label: Participants
+      description: Select all expected participants.
+      options:
+        - label: Codex
+        - label: Claude
+        - label: Gemini
+        - label: Antigravity
+    validations:
+      required: true
+  - type: textarea
+    id: decision_required
+    attributes:
+      label: Decision Required
+      description: Describe the decision that must be made.
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+      description: Background and relevant links/issues.
+    validations:
+      required: true
+  - type: textarea
+    id: constraints
+    attributes:
+      label: Constraints
+      description: Safety, medical, operational, or policy constraints.
+      value: |
+        - Follow docs/safety/*
+        - Human CTO is final decision authority
+        - Preserve manual fallback routes
+    validations:
+      required: true
+  - type: markdown
+    attributes:
+      value: |
+        ## Speaking Protocol (Required)
+        Every AI participant must comment using this format:
+
+        ```markdown
+        ## [ROLE]
+
+        ### Analysis
+        ...
+
+        ### Proposal
+        ...
+
+        ### Risks
+        ...
+
+        ### Decision Suggestion
+        ...
+        ```
+  - type: markdown
+    attributes:
+      value: |
+        ## Lifecycle Authority (Hard Rule)
+        - `council:open -> council:review`: Bot or Human CTO
+        - `council:review -> council:decision`: Human CTO only
+        - `council:decision -> council:archived`: Bot (administrative)
+
+        AI agents must not move an issue into `council:decision`.
