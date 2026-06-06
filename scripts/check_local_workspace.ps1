@@ -59,7 +59,7 @@ $repoRegistry = @(
         Alias = "hcos"
         Name = "HealthCheck-OS"
         Roles = @("dev", "subpc", "all")
-        Path = "C:\data\GitHub_org\HealthCheck-OS"
+        Path = "C:\path\to\repos\HealthCheck-OS"
         Remote = "https://github.com/akaza-lab-org/HealthCheck-OS"
         DefaultBranch = "main"
     },
@@ -67,7 +67,7 @@ $repoRegistry = @(
         Alias = "skills"
         Name = "skills"
         Roles = @("dev", "all")
-        Path = "C:\data\GitHub_org\skills"
+        Path = "C:\path\to\repos\skills"
         Remote = "https://github.com/akaza-lab-org/skills"
         DefaultBranch = "main"
     },
@@ -75,7 +75,7 @@ $repoRegistry = @(
         Alias = "summarymaker"
         Name = "summarymaker"
         Roles = @("dev", "all")
-        Path = "C:\data\GitHub_org\summarymaker"
+        Path = "C:\path\to\repos\summarymaker"
         Remote = "https://github.com/akaza-lab-org/summarymaker"
         DefaultBranch = "main"
     },
@@ -91,7 +91,7 @@ $repoRegistry = @(
         Alias = "ahk"
         Name = "ahk"
         Roles = @("dev", "subpc", "clinic", "all")
-        Path = "C:\data\GitHub\ahk"
+        Path = "C:\path\to\apps\ahk"
         Remote = "https://github.com/akaza-lab-org/AHK_setting"
         DefaultBranch = "main"
     },
@@ -107,7 +107,7 @@ $repoRegistry = @(
         Alias = "ikensho_git"
         Name = "ikensho_git"
         Roles = @("all")
-        Path = "C:\data\GitHub_org\ikensho_git"
+        Path = "C:\path\to\repos\ikensho_git"
         Remote = "https://github.com/akaza-lab-org/ikensho_git"
         DefaultBranch = "main"
     },
@@ -115,7 +115,7 @@ $repoRegistry = @(
         Alias = "keikakusho"
         Name = "keikakusho"
         Roles = @("all")
-        Path = "C:\data\GitHub_org\keikakusho"
+        Path = "C:\path\to\repos\keikakusho"
         Remote = "https://github.com/akaza-lab-org/keikakusho"
         DefaultBranch = "main"
     },
@@ -123,7 +123,7 @@ $repoRegistry = @(
         Alias = "DM-kousin"
         Name = "DM-kousin"
         Roles = @("all")
-        Path = "C:\data\GitHub_org\DM-kousin"
+        Path = "C:\path\to\repos\DM-kousin"
         Remote = "https://github.com/akaza-lab-org/DM-kousin"
         DefaultBranch = "main"
     },
@@ -131,7 +131,7 @@ $repoRegistry = @(
         Alias = "wakumy_apilot"
         Name = "wakumy_apilot"
         Roles = @("all")
-        Path = "C:\data\GitHub_org\wakumy_apilot"
+        Path = "C:\path\to\repos\wakumy_apilot"
         Remote = "https://github.com/akaza-lab-org/wakumy_apilot"
         DefaultBranch = "main"
     }

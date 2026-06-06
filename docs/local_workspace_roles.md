@@ -10,11 +10,11 @@ Recommended repositories:
 
 | Repository | Standard local path | Why |
 |---|---|---|
-| `HealthCheck-OS` | `C:\data\GitHub_org\HealthCheck-OS` | governance, docs, issue/PR workflows |
-| `skills` | `C:\data\GitHub_org\skills` | shared AI skills |
-| `summarymaker` | `C:\data\GitHub_org\summarymaker` | advisory app development |
+| `HealthCheck-OS` | `C:\path\to\repos\HealthCheck-OS` | governance, docs, issue/PR workflows |
+| `skills` | `C:\path\to\repos\skills` | shared AI skills |
+| `summarymaker` | `C:\path\to\repos\summarymaker` | advisory app development |
 | `clinic-app` | `C:\data\GitHub\kensin` | kensin maintenance |
-| `AHK_setting` | `C:\data\GitHub\ahk` | AHK maintenance and EMR bridge review |
+| `AHK_setting` | `C:\path\to\apps\ahk` | AHK maintenance and EMR bridge review |
 | `pdf_digitizer` | `C:\data\GitHub\pdf_digitizer` | paused/advisory tool, only when needed |
 
 Open `workspaces/hcos-dev.code-workspace` from the HCOS repository.
@@ -27,9 +27,9 @@ Recommended repositories:
 
 | Repository | Standard local path | Why |
 |---|---|---|
-| `HealthCheck-OS` | `C:\data\GitHub_org\HealthCheck-OS` | release procedure docs |
+| `HealthCheck-OS` | `C:\path\to\repos\HealthCheck-OS` | release procedure docs |
 | `clinic-app` | `C:\data\GitHub\kensin` | app build and release artifacts |
-| `AHK_setting` | `C:\data\GitHub\ahk` | AHK release and config migration checks |
+| `AHK_setting` | `C:\path\to\apps\ahk` | AHK release and config migration checks |
 
 Do not treat this terminal as the source of production settings. Release outputs and logs should stay outside git unless explicitly documented.
 
@@ -41,7 +41,7 @@ Recommended repositories:
 
 | Repository | Standard local path | Why |
 |---|---|---|
-| `AHK_setting` | `C:\data\GitHub\ahk` | AHK scripts and terminal-specific `config.ini` |
+| `AHK_setting` | `C:\path\to\apps\ahk` | AHK scripts and terminal-specific `config.ini` |
 | `HealthCheck-OS` | optional | reference docs only |
 
 Rules:

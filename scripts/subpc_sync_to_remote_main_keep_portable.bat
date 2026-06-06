@@ -6,7 +6,7 @@ rem Keeps local kensin portable script edits as an optional patch.
 rem ASCII-only messages to avoid mojibake in cmd.exe.
 
 set "ROOT_A=C:\data\GitHub"
-set "ROOT_B=C:\data\GitHub_org"
+set "ROOT_B=C:\path\to\repos"
 set "PATCH_DIR=%USERPROFILE%\Desktop\subpc_git_backup"
 
 set "REPO_KENSIN="

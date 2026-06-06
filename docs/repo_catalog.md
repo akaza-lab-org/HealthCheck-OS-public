@@ -18,21 +18,21 @@ HCOS が見守る repository / local-only tool の現況一覧です。
 
 | Repository | Local path | Status | Primary use | Next operating focus | Caution |
 |---|---|---|---|---|---|
-| `akaza-lab-org/HealthCheck-OS` | `C:\data\GitHub_org\HealthCheck-OS` | `active` | Cross-repo governance, docs, decision memory | Monthly review, repo catalog, knowledge promotion | AI agents must not merge PRs or move Council issues to `council:decision` |
+| `akaza-lab-org/HealthCheck-OS` | `C:\path\to\repos\HealthCheck-OS` | `active` | Cross-repo governance, docs, decision memory | Monthly review, repo catalog, knowledge promotion | AI agents must not merge PRs or move Council issues to `council:decision` |
 | `akaza-lab-org/clinic-app` | `C:\data\GitHub\kensin` | `maintenance` | Kensin app, reception/doctor/control workflows, PDF output | Polish, regression prevention, cancelled-visit/output safety | Medical logic, fee/order behavior, and production deploys require Human CTO review |
-| `akaza-lab-org/AHK_setting` | `C:\data\GitHub\ahk` | `maintenance` | AutoHotkey EMR execution target, launcher, bridge scripts | Small UX improvements, config safety, real-terminal validation | Do not overwrite terminal-specific `config.ini`; preserve manual operation paths |
+| `akaza-lab-org/AHK_setting` | `C:\path\to\apps\ahk` | `maintenance` | AutoHotkey EMR execution target, launcher, bridge scripts | Small UX improvements, config safety, real-terminal validation | Do not overwrite terminal-specific `config.ini`; preserve manual operation paths |
 
 ## Tier B - Advisory Management
 
 | Repository | Local path | Status | Primary use | Next operating focus | Caution |
 |---|---|---|---|---|---|
-| `akaza-lab-org/summarymaker` | `C:\data\GitHub_org\summarymaker` | `active` | Diabetes summary app, Gemini, Next.js/Electron | PDF workflow, build reliability, PHI-safe upload flow | Ensure masked/processed images, not original PHI-bearing files, are sent for analysis |
+| `akaza-lab-org/summarymaker` | `C:\path\to\repos\summarymaker` | `active` | Diabetes summary app, Gemini, Next.js/Electron | PDF workflow, build reliability, PHI-safe upload flow | Ensure masked/processed images, not original PHI-bearing files, are sent for analysis |
 | `akaza-lab-org/pdf_digitizer` | `C:\data\GitHub\pdf_digitizer` | `paused` | PDF coordinate extraction and editor support | Keep scope to ADR-001 Phase 1-2 unless explicitly reopened | Do not silently expand into full clinical document platform |
-| `akaza-lab-org/skills` | `C:\data\GitHub_org\skills` | `active` | Shared Codex/Claude/Antigravity skills | Tier B onboarding complete (skills#4); skill collection, deduplication, reusable workflows | Avoid committing secrets or project-private scratch notes |
-| `akaza-lab-org/ikensho_git` | `C:\data\GitHub_org\ikensho_git` | `re-entry` | Medical document / opinion letter app | Tier B onboarding complete (ikensho_git#2); run re-entry checklist before implementation | Confirm current data model and PHI handling before changes |
-| `akaza-lab-org/keikakusho` | `C:\data\GitHub_org\keikakusho` | `re-entry` | Care plan / clinical support document tool | Tier B onboarding complete (keikakusho#7); run re-entry checklist before implementation | Document output may affect clinical workflow; review generated forms carefully |
-| `akaza-lab-org/DM-kousin` | `C:\data\GitHub_org\DM-kousin` | `re-entry` | Diabetes visit recommendation support | Tier B onboarding complete (DM-kousin#1); run re-entry checklist before implementation | Patient outreach logic can be clinically sensitive |
-| `akaza-lab-org/wakumy_apilot` | `C:\data\GitHub_org\wakumy_apilot` | `re-entry` | Round visit / vaccination management support | Tier B onboarding complete (wakumy_apilot#1); run re-entry checklist before implementation | Snapshot sync and cancellation state require overwrite-safety review |
+| `akaza-lab-org/skills` | `C:\path\to\repos\skills` | `active` | Shared Codex/Claude/Antigravity skills | Tier B onboarding complete (skills#4); skill collection, deduplication, reusable workflows | Avoid committing secrets or project-private scratch notes |
+| `akaza-lab-org/ikensho_git` | `C:\path\to\repos\ikensho_git` | `re-entry` | Medical document / opinion letter app | Tier B onboarding complete (ikensho_git#2); run re-entry checklist before implementation | Confirm current data model and PHI handling before changes |
+| `akaza-lab-org/keikakusho` | `C:\path\to\repos\keikakusho` | `re-entry` | Care plan / clinical support document tool | Tier B onboarding complete (keikakusho#7); run re-entry checklist before implementation | Document output may affect clinical workflow; review generated forms carefully |
+| `akaza-lab-org/DM-kousin` | `C:\path\to\repos\DM-kousin` | `re-entry` | Diabetes visit recommendation support | Tier B onboarding complete (DM-kousin#1); run re-entry checklist before implementation | Patient outreach logic can be clinically sensitive |
+| `akaza-lab-org/wakumy_apilot` | `C:\path\to\repos\wakumy_apilot` | `re-entry` | Round visit / vaccination management support | Tier B onboarding complete (wakumy_apilot#1); run re-entry checklist before implementation | Snapshot sync and cancellation state require overwrite-safety review |
 
 ## Tier C - Inventory Only
 

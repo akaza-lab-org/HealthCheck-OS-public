@@ -11,7 +11,7 @@ Accepted（原則部分）。
 
 ## Context
 
-HCOS では現在、GitHub 上のすべての操作（push / PR / コメント / レビュー）が **単一の Human CTO 認証情報（`akazatmd-ctrl`）** で実行される。このため GitHub の actor identity では、Claude / Codex / Gemini を区別できない。
+HCOS では現在、GitHub 上のすべての操作（push / PR / コメント / レビュー）が **単一の Human CTO 認証情報（`human-cto`）** で実行される。このため GitHub の actor identity では、Claude / Codex / Gemini を区別できない。
 
 Issue #138 は「どのAIがその作業を行ったか」を判別可能にする署名プロトコルを提案した。検討の過程で、識別を語る際に混同されがちな **3つの層** を分離する必要が明らかになった。
 
@@ -40,7 +40,7 @@ Issue #138 は「どのAIがその作業を行ったか」を判別可能にす�
    署名・本文テキストの一致のみで、merge・デプロイ・破壊的変更・`council:decision` 遷移などの権限を解錠してはならない。自己申告テキストが権限を解錠する設計は、詐称による権限昇格の穴になる。
 
 3. **唯一の本物のセキュリティ境界は「Human CTO が自分で merge する行為」である。**
-   GitHub が認証できる事実は「`akazatmd-ctrl` が操作した」のみ。その下で特定AIに帰属させる情報はすべて自己申告。したがって、最終的な信頼の拠り所は、Human CTO が PR を読み、レビューの真正性を自ら判断し、自ら merge する行為に置く。これは既存ルール「**merge は Human CTO のみ・例外なし**」（`docs/human_cto_commands.md`）と一致する。
+   GitHub が認証できる事実は「`human-cto` が操作した」のみ。その下で特定AIに帰属させる情報はすべて自己申告。したがって、最終的な信頼の拠り所は、Human CTO が PR を読み、レビューの真正性を自ら判断し、自ら merge する行為に置く。これは既存ルール「**merge は Human CTO のみ・例外なし**」（`docs/human_cto_commands.md`）と一致する。
 
 4. **署名は Human CTO の判断を助ける監査ログである。**
    署名の価値は「誰が何を提案したか」を人間可読の記録として残すこと。判断の代替ではなく、判断の材料。詐称されても、原則 3 により安全は保たれる（詐称しても merge できない）。

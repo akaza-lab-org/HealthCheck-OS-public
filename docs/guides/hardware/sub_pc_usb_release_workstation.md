@@ -18,7 +18,7 @@ It should not become the normal source of truth for production DB state, termina
 Use the Organization-aligned layout:
 
 ```text
-C:\data\GitHub_org\
+C:\path\to\repos\
   HealthCheck-OS\
   kensin\
   AHK_setting\
@@ -57,9 +57,9 @@ git config --global core.autocrlf true
 Before building or fixing, always check:
 
 ```powershell
-git -C C:\data\GitHub_org\kensin status --short -b
-git -C C:\data\GitHub_org\AHK_setting status --short -b
-git -C C:\data\GitHub_org\HealthCheck-OS status --short -b
+git -C C:\path\to\repos\kensin status --short -b
+git -C C:\path\to\repos\AHK_setting status --short -b
+git -C C:\path\to\repos\HealthCheck-OS status --short -b
 ```
 
 ## Release Build Flow
@@ -67,7 +67,7 @@ git -C C:\data\GitHub_org\HealthCheck-OS status --short -b
 Build only on the sub PC or another designated development/build machine, never on the EMR production PC.
 
 ```powershell
-cd C:\data\GitHub_org\kensin
+cd C:\path\to\repos\kensin
 git pull
 pytest
 .\build_portable.bat
@@ -100,7 +100,7 @@ USB:\
 Copy from sub PC:
 
 ```text
-C:\data\GitHub_org\kensin\dist\kenshin_<version>_<commit>.zip
+C:\path\to\repos\kensin\dist\kenshin_<version>_<commit>.zip
 ```
 
 to:
@@ -150,7 +150,7 @@ Rules:
 Sub PC validation:
 
 ```powershell
-cd C:\data\GitHub_org\AHK_setting
+cd C:\path\to\repos\AHK_setting
 & "C:\Program Files\AutoHotkey\v2\AutoHotkey64.exe" /ErrorStdOut /Validate "kenshin_order_bridge.ahk"
 & "C:\Program Files\AutoHotkey\v2\AutoHotkey64.exe" /ErrorStdOut /Validate "main.ahk"
 & "C:\Program Files\AutoHotkey\v2\AutoHotkey64.exe" /ErrorStdOut /Validate "config_editor.ahk"

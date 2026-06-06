@@ -42,16 +42,16 @@ function Resolve-RepoAliases {
 }
 
 $repositories = @(
-    @{ Alias = "hcos"; Name = "HealthCheck-OS"; Path = "C:\data\GitHub_org\HealthCheck-OS"; Roles = @("dev", "subpc", "all") },
-    @{ Alias = "skills"; Name = "skills"; Path = "C:\data\GitHub_org\skills"; Roles = @("dev", "all") },
-    @{ Alias = "summarymaker"; Name = "summarymaker"; Path = "C:\data\GitHub_org\summarymaker"; Roles = @("dev", "all") },
+    @{ Alias = "hcos"; Name = "HealthCheck-OS"; Path = "C:\path\to\repos\HealthCheck-OS"; Roles = @("dev", "subpc", "all") },
+    @{ Alias = "skills"; Name = "skills"; Path = "C:\path\to\repos\skills"; Roles = @("dev", "all") },
+    @{ Alias = "summarymaker"; Name = "summarymaker"; Path = "C:\path\to\repos\summarymaker"; Roles = @("dev", "all") },
     @{ Alias = "kensin"; Name = "kensin"; Path = "C:\data\GitHub\kensin"; Roles = @("dev", "subpc", "all") },
-    @{ Alias = "ahk"; Name = "AHK_setting"; Path = "C:\data\GitHub\ahk"; Roles = @("dev", "subpc", "clinic", "all") },
+    @{ Alias = "ahk"; Name = "AHK_setting"; Path = "C:\path\to\apps\ahk"; Roles = @("dev", "subpc", "clinic", "all") },
     @{ Alias = "pdf_digitizer"; Name = "pdf_digitizer"; Path = "C:\data\GitHub\pdf_digitizer"; Roles = @("dev", "all") },
-    @{ Alias = "ikensho_git"; Name = "ikensho_git"; Path = "C:\data\GitHub_org\ikensho_git"; Roles = @("all") },
-    @{ Alias = "keikakusho"; Name = "keikakusho"; Path = "C:\data\GitHub_org\keikakusho"; Roles = @("all") },
-    @{ Alias = "DM-kousin"; Name = "DM-kousin"; Path = "C:\data\GitHub_org\DM-kousin"; Roles = @("all") },
-    @{ Alias = "wakumy_apilot"; Name = "wakumy_apilot"; Path = "C:\data\GitHub_org\wakumy_apilot"; Roles = @("all") }
+    @{ Alias = "ikensho_git"; Name = "ikensho_git"; Path = "C:\path\to\repos\ikensho_git"; Roles = @("all") },
+    @{ Alias = "keikakusho"; Name = "keikakusho"; Path = "C:\path\to\repos\keikakusho"; Roles = @("all") },
+    @{ Alias = "DM-kousin"; Name = "DM-kousin"; Path = "C:\path\to\repos\DM-kousin"; Roles = @("all") },
+    @{ Alias = "wakumy_apilot"; Name = "wakumy_apilot"; Path = "C:\path\to\repos\wakumy_apilot"; Roles = @("all") }
 )
 
 $repoAliases = Resolve-RepoAliases -Values $Repos

@@ -5,8 +5,8 @@
 ## 1. 初回だけ行う設定
 
 ```powershell
-mkdir C:\data\GitHub_org
-cd C:\data\GitHub_org
+mkdir C:\path\to\repos
+cd C:\path\to\repos
 
 git clone https://github.com/akaza-lab-org/HealthCheck-OS.git
 git clone https://github.com/akaza-lab-org/clinic-app.git kensin
@@ -30,9 +30,9 @@ Test-Path "C:\Program Files\AutoHotkey\v2\AutoHotkey64.exe"
 ## 2. 作業前確認
 
 ```powershell
-git -C C:\data\GitHub_org\HealthCheck-OS status --short -b
-git -C C:\data\GitHub_org\kensin status --short -b
-git -C C:\data\GitHub_org\AHK_setting status --short -b
+git -C C:\path\to\repos\HealthCheck-OS status --short -b
+git -C C:\path\to\repos\kensin status --short -b
+git -C C:\path\to\repos\AHK_setting status --short -b
 ```
 
 未コミット変更がある場合は、内容を確認してから作業する。
@@ -40,7 +40,7 @@ git -C C:\data\GitHub_org\AHK_setting status --short -b
 ## 3. kensin ZIP生成
 
 ```powershell
-cd C:\data\GitHub_org\kensin
+cd C:\path\to\repos\kensin
 git pull
 pytest
 .\build_portable.bat
@@ -49,7 +49,7 @@ pytest
 生成物:
 
 ```text
-C:\data\GitHub_org\kensin\dist\kenshin_<version>_<commit>.zip
+C:\path\to\repos\kensin\dist\kenshin_<version>_<commit>.zip
 ```
 
 USBへコピー:
@@ -63,7 +63,7 @@ USB:\kensin_release\incoming\
 AHKを変更した場合だけ実行する。
 
 ```powershell
-cd C:\data\GitHub_org\AHK_setting
+cd C:\path\to\repos\AHK_setting
 & "C:\Program Files\AutoHotkey\v2\AutoHotkey64.exe" /ErrorStdOut /Validate "kenshin_order_bridge.ahk"
 & "C:\Program Files\AutoHotkey\v2\AutoHotkey64.exe" /ErrorStdOut /Validate "main.ahk"
 & "C:\Program Files\AutoHotkey\v2\AutoHotkey64.exe" /ErrorStdOut /Validate "config_editor.ahk"
@@ -82,7 +82,7 @@ cd C:\data\GitHub_org\AHK_setting
 fix後:
 
 ```powershell
-cd C:\data\GitHub_org\kensin
+cd C:\path\to\repos\kensin
 pytest
 .\build_portable.bat
 ```

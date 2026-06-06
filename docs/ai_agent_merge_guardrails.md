@@ -57,7 +57,7 @@ Local hook は `git push origin main` を止められますが、`gh pr merge` �
 各 clone では、次の script で safety hook を入れます。
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File C:\data\GitHub_org\HealthCheck-OS\scripts\install_git_safety_hooks.ps1 -Role dev
+powershell -ExecutionPolicy Bypass -File C:\path\to\repos\HealthCheck-OS\scripts\install_git_safety_hooks.ps1 -Role dev
 ```
 
 Role は端末に合わせて選びます。

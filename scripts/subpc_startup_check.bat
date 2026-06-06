@@ -4,7 +4,7 @@ setlocal EnableExtensions
 rem ASCII-only output to reduce mojibake risk on mixed code pages.
 
 set "ROOT_A=C:\data\GitHub"
-set "ROOT_B=C:\data\GitHub_org"
+set "ROOT_B=C:\path\to\repos"
 
 set "REPO_KENSIN="
 set "REPO_AHK="

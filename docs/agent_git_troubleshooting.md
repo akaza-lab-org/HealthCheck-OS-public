@@ -40,7 +40,7 @@ Get-Command git
 ### 3️⃣ **リポジトリで git status を実行**
 
 ```powershell
-cd C:\DATA\project\hcos_project\<リポジトリ名>
+cd C:\path\to\projects\hcos_project\<リポジトリ名>
 git status
 ```
 

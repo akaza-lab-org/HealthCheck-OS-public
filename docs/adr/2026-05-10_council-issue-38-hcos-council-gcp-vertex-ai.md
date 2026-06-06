@@ -36,13 +36,13 @@ council:open
 - [ ] 安全な JSON キー保管場所のベストプラクティス選定
 
 ## Final Decision Signal
-Author: @akazatmd-ctrl
+Author: @human-cto
 
 GCP 認証標準化ガイドは PR #81 でマージ済み（gcp_per_app_sa_setup_guide.md / pattern_gcp_portable_key.md）。Council 決定事項の実装完了につき archived として close。
 
 ## Council Transcript Index
 1. @github-actions[bot] (2026-05-06T21:58:07Z)
-2. @akazatmd-ctrl (2026-05-10T10:46:39Z)
-3. @akazatmd-ctrl (2026-05-10T10:49:05Z)
-4. @akazatmd-ctrl (2026-05-10T11:17:10Z)
-5. @akazatmd-ctrl (2026-05-10T13:40:44Z)
+2. @human-cto (2026-05-10T10:46:39Z)
+3. @human-cto (2026-05-10T10:49:05Z)
+4. @human-cto (2026-05-10T11:17:10Z)
+5. @human-cto (2026-05-10T13:40:44Z)

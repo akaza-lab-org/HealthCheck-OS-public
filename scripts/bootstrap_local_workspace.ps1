@@ -63,16 +63,16 @@ $scriptRoot = $PSScriptRoot
 $repoRoot = (Resolve-Path (Join-Path $scriptRoot "..")).Path
 
 $repositories = @(
-    @{ Alias = "hcos"; Name = "HealthCheck-OS"; Roles = @("dev", "subpc", "all"); Path = "C:\data\GitHub_org\HealthCheck-OS"; Remote = "https://github.com/akaza-lab-org/HealthCheck-OS"; DefaultBranch = "main" },
-    @{ Alias = "skills"; Name = "skills"; Roles = @("dev", "all"); Path = "C:\data\GitHub_org\skills"; Remote = "https://github.com/akaza-lab-org/skills"; DefaultBranch = "main" },
-    @{ Alias = "summarymaker"; Name = "summarymaker"; Roles = @("dev", "all"); Path = "C:\data\GitHub_org\summarymaker"; Remote = "https://github.com/akaza-lab-org/summarymaker"; DefaultBranch = "main" },
+    @{ Alias = "hcos"; Name = "HealthCheck-OS"; Roles = @("dev", "subpc", "all"); Path = "C:\path\to\repos\HealthCheck-OS"; Remote = "https://github.com/akaza-lab-org/HealthCheck-OS"; DefaultBranch = "main" },
+    @{ Alias = "skills"; Name = "skills"; Roles = @("dev", "all"); Path = "C:\path\to\repos\skills"; Remote = "https://github.com/akaza-lab-org/skills"; DefaultBranch = "main" },
+    @{ Alias = "summarymaker"; Name = "summarymaker"; Roles = @("dev", "all"); Path = "C:\path\to\repos\summarymaker"; Remote = "https://github.com/akaza-lab-org/summarymaker"; DefaultBranch = "main" },
     @{ Alias = "kensin"; Name = "kensin"; Roles = @("dev", "subpc", "all"); Path = "C:\data\GitHub\kensin"; Remote = "https://github.com/akaza-lab-org/clinic-app"; DefaultBranch = "main" },
-    @{ Alias = "ahk"; Name = "AHK_setting"; Roles = @("dev", "subpc", "clinic", "all"); Path = "C:\data\GitHub\ahk"; Remote = "https://github.com/akaza-lab-org/AHK_setting"; DefaultBranch = "main" },
+    @{ Alias = "ahk"; Name = "AHK_setting"; Roles = @("dev", "subpc", "clinic", "all"); Path = "C:\path\to\apps\ahk"; Remote = "https://github.com/akaza-lab-org/AHK_setting"; DefaultBranch = "main" },
     @{ Alias = "pdf_digitizer"; Name = "pdf_digitizer"; Roles = @("dev", "all"); Path = "C:\data\GitHub\pdf_digitizer"; Remote = "https://github.com/akaza-lab-org/pdf_digitizer"; DefaultBranch = "master" },
-    @{ Alias = "ikensho_git"; Name = "ikensho_git"; Roles = @("all"); Path = "C:\data\GitHub_org\ikensho_git"; Remote = "https://github.com/akaza-lab-org/ikensho_git"; DefaultBranch = "main" },
-    @{ Alias = "keikakusho"; Name = "keikakusho"; Roles = @("all"); Path = "C:\data\GitHub_org\keikakusho"; Remote = "https://github.com/akaza-lab-org/keikakusho"; DefaultBranch = "main" },
-    @{ Alias = "DM-kousin"; Name = "DM-kousin"; Roles = @("all"); Path = "C:\data\GitHub_org\DM-kousin"; Remote = "https://github.com/akaza-lab-org/DM-kousin"; DefaultBranch = "main" },
-    @{ Alias = "wakumy_apilot"; Name = "wakumy_apilot"; Roles = @("all"); Path = "C:\data\GitHub_org\wakumy_apilot"; Remote = "https://github.com/akaza-lab-org/wakumy_apilot"; DefaultBranch = "main" }
+    @{ Alias = "ikensho_git"; Name = "ikensho_git"; Roles = @("all"); Path = "C:\path\to\repos\ikensho_git"; Remote = "https://github.com/akaza-lab-org/ikensho_git"; DefaultBranch = "main" },
+    @{ Alias = "keikakusho"; Name = "keikakusho"; Roles = @("all"); Path = "C:\path\to\repos\keikakusho"; Remote = "https://github.com/akaza-lab-org/keikakusho"; DefaultBranch = "main" },
+    @{ Alias = "DM-kousin"; Name = "DM-kousin"; Roles = @("all"); Path = "C:\path\to\repos\DM-kousin"; Remote = "https://github.com/akaza-lab-org/DM-kousin"; DefaultBranch = "main" },
+    @{ Alias = "wakumy_apilot"; Name = "wakumy_apilot"; Roles = @("all"); Path = "C:\path\to\repos\wakumy_apilot"; Remote = "https://github.com/akaza-lab-org/wakumy_apilot"; DefaultBranch = "main" }
 )
 
 $repoAliases = Resolve-RepoAliases -Values $Repos
@@ -188,7 +188,7 @@ if ($WhatIfPreference) {
 }
 
 if ($SetupSkills -and ($selectedAliases -contains "skills")) {
-    $skillsSetup = "C:\data\GitHub_org\skills\setup-shared-skills.ps1"
+    $skillsSetup = "C:\path\to\repos\skills\setup-shared-skills.ps1"
     if (Test-Path -LiteralPath $skillsSetup) {
         if ($PSCmdlet.ShouldProcess($skillsSetup, "Run shared skills setup")) {
             & powershell -NoProfile -ExecutionPolicy Bypass -File $skillsSetup

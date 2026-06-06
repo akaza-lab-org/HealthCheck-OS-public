@@ -35,7 +35,7 @@ What it does:
 
 - Detects repo paths from:
   - `C:\data\GitHub\...`
-  - `C:\data\GitHub_org\...`
+  - `C:\path\to\repos\...`
 - Runs `git fetch --all --prune` in each repo.
 - Shows:
   - `git status -sb`

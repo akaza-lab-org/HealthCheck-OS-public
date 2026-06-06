@@ -317,7 +317,7 @@ Settings → Secrets and variables → Actions → Variables → New repository 
 現在設定済みの変数:
 | 変数名 | 値 | 用途 |
 |---|---|---|
-| `HUMAN_CTO_USERNAME` | `akazatmd-ctrl` | state guard の actor チェック |
+| `HUMAN_CTO_USERNAME` | `human-cto` | state guard の actor チェック |
 
 ---
 

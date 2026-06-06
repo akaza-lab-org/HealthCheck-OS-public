@@ -6,25 +6,25 @@
 
 過去の配置例:
 
-- `C:\DATA\project\hcos_project\HealthCheck-OS`
-- `C:\DATA\project\hcos_project\clinic-app`
-- `C:\DATA\project\hcos_project\AHK_setting`
-- `C:\DATA\project\hcos_project\skills`
+- `C:\path\to\projects\hcos_project\HealthCheck-OS`
+- `C:\path\to\projects\hcos_project\clinic-app`
+- `C:\path\to\projects\hcos_project\AHK_setting`
+- `C:\path\to\projects\hcos_project\skills`
 
 現在の標準配置例:
 
-- `C:\data\GitHub_org\HealthCheck-OS`
-- `C:\data\GitHub_org\skills`
-- `C:\data\GitHub_org\summarymaker`
+- `C:\path\to\repos\HealthCheck-OS`
+- `C:\path\to\repos\skills`
+- `C:\path\to\repos\summarymaker`
 - `C:\data\GitHub\kensin`
-- `C:\data\GitHub\ahk`
+- `C:\path\to\apps\ahk`
 
 新規端末では、最初に HCOS を clone してから bootstrap script を使う。
 
 ```powershell
-New-Item -ItemType Directory -Force C:\data\GitHub_org | Out-Null
-git clone https://github.com/akaza-lab-org/HealthCheck-OS.git C:\data\GitHub_org\HealthCheck-OS
-cd C:\data\GitHub_org\HealthCheck-OS
+New-Item -ItemType Directory -Force C:\path\to\repos | Out-Null
+git clone https://github.com/akaza-lab-org/HealthCheck-OS.git C:\path\to\repos\HealthCheck-OS
+cd C:\path\to\repos\HealthCheck-OS
 powershell -ExecutionPolicy Bypass -File scripts\bootstrap_local_workspace.ps1 -Role dev -InstallHooks
 ```
 
@@ -43,7 +43,7 @@ powershell -ExecutionPolicy Bypass -File scripts\bootstrap_local_workspace.ps1 -
 `skills` リポジトリで次を実行する。
 
 ```powershell
-cd C:\data\GitHub_org\skills
+cd C:\path\to\repos\skills
 powershell -ExecutionPolicy Bypass -File .\setup-shared-skills.ps1
 ```
 
@@ -56,21 +56,21 @@ powershell -ExecutionPolicy Bypass -File .\setup-shared-skills.ps1
 更新時は次を使う。
 
 ```powershell
-cd C:\data\GitHub_org\skills
+cd C:\path\to\repos\skills
 powershell -ExecutionPolicy Bypass -File .\update-shared-skills.ps1
 ```
 
 Windows 起動時に自動更新したい場合は次を実行する（スタートアップフォルダに `SyncSkills.lnk` が作成される）。
 
 ```powershell
-cd C:\data\GitHub_org\skills
+cd C:\path\to\repos\skills
 powershell -ExecutionPolicy Bypass -File .\automation\create_shortcut.ps1
 ```
 
 ### 2. HealthCheck-OS の Python セットアップ
 
 ```powershell
-cd C:\data\GitHub_org\HealthCheck-OS
+cd C:\path\to\repos\HealthCheck-OS
 py -m venv .venv
 .\.venv\Scripts\python.exe -m pip install -r requirements.txt
 ```
@@ -102,7 +102,7 @@ py -m venv .venv
 ### 4. AHK_setting の初期確認
 
 ```powershell
-cd C:\data\GitHub\ahk
+cd C:\path\to\apps\ahk
 ```
 
 - AutoHotkey v2 をインストールする

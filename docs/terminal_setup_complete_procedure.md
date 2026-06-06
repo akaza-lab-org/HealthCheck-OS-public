@@ -36,9 +36,9 @@ HCOS AI エージェント向けの**共通環境セットアップ**手順で�
 現在の標準配置では、最初に HCOS だけ clone し、以後は bootstrap script で必要 repository を標準 path にそろえます。
 
 ```powershell
-New-Item -ItemType Directory -Force C:\data\GitHub_org | Out-Null
-git clone https://github.com/akaza-lab-org/HealthCheck-OS.git C:\data\GitHub_org\HealthCheck-OS
-cd C:\data\GitHub_org\HealthCheck-OS
+New-Item -ItemType Directory -Force C:\path\to\repos | Out-Null
+git clone https://github.com/akaza-lab-org/HealthCheck-OS.git C:\path\to\repos\HealthCheck-OS
+cd C:\path\to\repos\HealthCheck-OS
 
 # Development PC standard set
 powershell -ExecutionPolicy Bypass -File scripts\bootstrap_local_workspace.ps1 -Role dev -InstallHooks
@@ -50,7 +50,7 @@ powershell -ExecutionPolicy Bypass -File scripts\bootstrap_local_workspace.ps1 -
 標準 path と role 別 repository は `docs/local_workspace_standard.md` と `docs/local_workspace_roles.md` を参照してください。以下の旧パス例は、過去端末の復旧やトラブルシュート用の参考として扱います。
 
 ```powershell
-cd C:\DATA\project\hcos_project
+cd C:\path\to\projects\hcos_project
 
 # 4 つのリポジトリをクローン
 git clone https://github.com/akaza-lab-org/clinic-app.git
@@ -66,7 +66,7 @@ git clone https://github.com/akaza-lab-org/HealthCheck-OS.git
 **正しい操作**:
 ```
 Select an account ダイアログが出たら
-→ akazatmd-ctrl アカウントを選択
+→ human-cto アカウントを選択
 → それだけ
 ```
 
@@ -117,7 +117,7 @@ core.safecrlf=warn
 1. **Windows キー** を押して「資格情報マネージャー」と検索
 2. **「Windows 資格情報」** をクリック
 3. **GitHub 関連エントリを確認**:
-   - 保持: `git:https://github.com`, `git:https://akazatmd-ctrl@github.com`, `gh:github.com:akazatmd-ctrl`
+   - 保持: `git:https://github.com`, `git:https://human-cto@github.com`, `gh:github.com:human-cto`
    - 削除: 上記以外の github エントリ（特に数字だけのアカウント）
 
 4. **不要なエントリを右クリック → 削除**
@@ -142,7 +142,7 @@ git push --dry-run origin main
 ### 3.1 ACL 修復スクリプト実行
 
 ```powershell
-cd C:\data\GitHub_org\HealthCheck-OS
+cd C:\path\to\repos\HealthCheck-OS
 
 # スクリプト実行（管理者権限必須）
 powershell -ExecutionPolicy Bypass -File .\scripts\fix_git_acl_permissions.ps1 -RepoPath $PWD -Verify
@@ -161,20 +161,20 @@ powershell -ExecutionPolicy Bypass -File .\scripts\fix_git_acl_permissions.ps1 -
 # 各リポジトリで同じスクリプトを実行
 $repos = @(
     "C:\data\GitHub\kensin",
-    "C:\data\GitHub\ahk",
-    "C:\data\GitHub_org\skills"
+    "C:\path\to\apps\ahk",
+    "C:\path\to\repos\skills"
 )
 
 foreach ($repo in $repos) {
     Write-Host "Fixing ACL in $repo..." -ForegroundColor Cyan
-    powershell -ExecutionPolicy Bypass -File "C:\data\GitHub_org\HealthCheck-OS\scripts\fix_git_acl_permissions.ps1" -RepoPath $repo -Verify
+    powershell -ExecutionPolicy Bypass -File "C:\path\to\repos\HealthCheck-OS\scripts\fix_git_acl_permissions.ps1" -RepoPath $repo -Verify
 }
 ```
 
 ## Step 4: Shared Skills セットアップ
 
 ```powershell
-cd C:\data\GitHub_org\skills
+cd C:\path\to\repos\skills
 
 # Codex, Claude Code, Antigravity 用の junction を作成
 powershell -ExecutionPolicy Bypass -File .\setup-shared-skills.ps1
@@ -191,7 +191,7 @@ powershell -ExecutionPolicy Bypass -File .\automation\create_shortcut.ps1
 ## Step 5: HealthCheck-OS Python 環境セットアップ
 
 ```powershell
-cd C:\data\GitHub_org\HealthCheck-OS
+cd C:\path\to\repos\HealthCheck-OS
 
 # 仮想環境作成
 python -m venv .venv
@@ -244,10 +244,10 @@ function Test-GitSetup($RepoPath) {
 
 # 全リポジトリをテスト
 @(
-    "C:\data\GitHub_org\HealthCheck-OS",
+    "C:\path\to\repos\HealthCheck-OS",
     "C:\data\GitHub\kensin",
-    "C:\data\GitHub\ahk",
-    "C:\data\GitHub_org\skills"
+    "C:\path\to\apps\ahk",
+    "C:\path\to\repos\skills"
 ) | ForEach-Object { Test-GitSetup $_ }
 ```
 
@@ -385,7 +385,7 @@ Write-Host "オプション拡張機能は VS Code UI から個別にインス�
 
 ```powershell
 # HealthCheck-OS の仮想環境を有効化
-cd C:\data\GitHub_org\HealthCheck-OS
+cd C:\path\to\repos\HealthCheck-OS
 .\.venv\Scripts\Activate.ps1
 
 # または kensin の仮想環境
@@ -527,7 +527,7 @@ $env:DEFAULT_GEMINI_MODEL="gemini-2.5-flash"
 ### Part A: 基盤環境セットアップ
 
 - [ ] 4 つのリポジトリがクローンされている
-- [ ] 初回認証時に `akazatmd-ctrl` アカウントのみを選択した
+- [ ] 初回認証時に `human-cto` アカウントのみを選択した
 - [ ] `git config --global user.name` が `HCOS Agent` になっている
 - [ ] Windows Credential Manager クリーンアップを実施（複数アカウントがある場合）
 - [ ] `git push --dry-run` でアカウント選択ダイアログが出ない
@@ -599,7 +599,7 @@ cd C:\data\GitHub\kensin
 AHK を使用して EMR 操作を自動化する場合：
 
 ```powershell
-cd C:\data\GitHub\ahk
+cd C:\path\to\apps\ahk
 
 # セットアップドキュメントを参照
 # README.md を確認
