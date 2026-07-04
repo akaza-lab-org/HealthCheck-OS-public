@@ -2,6 +2,9 @@
 
 ## 2026-07-04
 
+- Feature: chore: ignore local .codex directory closes #3.
+## 2026-07-04
+
 - Feature: docs: add agmsg protocol closes #1.
 ## 2026-06-05
 
