@@ -218,6 +218,7 @@ __marimo__/
 .streamlit/secrets.toml
 
 # Local secrets
+.codex/
 .claude/settings.local.json
 secret/.env
 secret/.env.local
