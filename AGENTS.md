@@ -8,6 +8,8 @@ This repository coordinates medical checkup automation work across agents.
 
 `hcos/BOOT.md` に起動手順と必読8ファイルが定義されています。Boot前に読むファイルはそちらを参照してください。
 
+`agmsg` を使う場合は `docs/agents/agmsg_protocol.md` も参照してください。agmsg は optional local transport であり、GitHub Issue/PR や Human CTO decision の source of truth ではありません。
+
 ```
 hcos/BOOT.md → hcos/RULES.md → hcos/STATE.md
 → docs/core/AUTHORITY.md

@@ -7,6 +7,7 @@ HCOS BOOT is the required entry point for agent sessions in this repository.
 - BOOT defines how an agent initializes role and state before work.
 - BOOT does not replace GitHub Issues/PRs as the source of truth.
 - BOOT does not grant merge authority to AI agents.
+- If `agmsg` is used for local agent coordination, also read `docs/agents/agmsg_protocol.md`. agmsg is optional local transport only and does not become a source of truth.
 
 ## Boot Commands
 
