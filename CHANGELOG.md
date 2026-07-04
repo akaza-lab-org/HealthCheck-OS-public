@@ -2,6 +2,9 @@
 
 ## 2026-07-04
 
+- Feature: docs: link agmsg protocol from AGENTS and BOOT closes #5.
+## 2026-07-04
+
 - Feature: chore: ignore local .codex directory closes #3.
 ## 2026-07-04
 
