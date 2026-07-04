@@ -1,5 +1,8 @@
 # Changelog
 
+## 2026-07-04
+
+- Feature: docs: add agmsg protocol closes #1.
 ## 2026-06-05
 
 - Feature: docs(safety): Rule 3-E に result_code_strip 例外型を追加 (kensin #438).
